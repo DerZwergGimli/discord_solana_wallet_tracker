@@ -92,13 +92,23 @@ async def report(ctx):
 
 
 @bot.command()
-async def wallet(ctx):
+async def step(ctx):
     await ctx.channel.send(f"🔗 https://app.step.finance/#/watch/{mywallet.getWalletAddress()} 🔗")
+
+
+@bot.command()
+async def solanabeach(ctx):
+    await ctx.channel.send(f"🔗 https://solanabeach.io/address/{mywallet.getWalletAddress()} 🔗")
 
 
 @bot.command()
 async def address(ctx):
     await ctx.channel.send(f"{mywallet.getWalletAddress()}")
+
+
+@bot.command()
+async def url(ctx):
+    await ctx.channel.send(f"{mywallet.getWalletURL()}")
 
 
 @bot.command()
@@ -109,7 +119,8 @@ async def help(ctx):
     $polis   \t\t [show wallet total $POLLIS]
     $atlas   \t\t [show wallet total $ATLAS]
     $report  \t    [creates a short balance report]
-    $wallet  \t    [creates a step.finance handle]
+    $step  \t    [creates a step.finance handle]
+    $solanabeach \t [creates a solanabeach handle]
     $address \t [show wallet solana-address-raw]""")
 
 
