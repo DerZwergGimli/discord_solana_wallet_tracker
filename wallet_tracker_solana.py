@@ -40,7 +40,7 @@ async def update_data_task():
     while True:
         mywallet.fetchAll()
         for member in bot.get_all_members():
-            text = f'💰 {mywallet.getTotalBalanceValueUSD(2)}$ 💰'
+            text = f'💰 ${mywallet.getTotalBalanceValueUSD(2)} 💰'
             await member.edit(nick=text)
         if round == 0:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {mywallet.getTotalBalanceValueName('USDC', 2)} 💵-USDC"))    
