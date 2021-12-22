@@ -81,11 +81,17 @@ async def polis(ctx):
 
 
 @bot.command()
+async def usdc(ctx):
+    balance = mywallet.getTotalBalanceValueName('USDC')
+    await ctx.send(f'I found:\t {balance} 💎-USDC')
+
+
+@bot.command()
 async def report(ctx):
-    embedVar = discord.Embed(title='🏴‍☠️ Treasry Report 🏴‍☠️', description='After watching closely i could find the following balances in the Guild-Wallet', color=0x00ff00)
-    embedVar.add_field(name='💵  USDC', value=f'\t {mywallet.getTotalBalanceValueName("USDC", 1)}', inline=True)
-    embedVar.add_field(name='💎 POLIS', value=f'{mywallet.getTotalBalanceValueName("POLIS", 1)}', inline=True)
-    embedVar.add_field(name='💎 ATLAS', value=f'{mywallet.getTotalBalanceValueName("ATLAS",1) }', inline=True)
+    embedVar = discord.Embed(title='🏴‍☠️ Treasury Report 🏴‍☠️', description='After watching closely i could find the following balances in the Guild-Wallet', color=0x00ff00)
+    embedVar.add_field(name='💵 USDC-amount', value=f'\t {mywallet.getTotalBalanceValueName("USDC", 1)}', inline=True)
+    embedVar.add_field(name='💎 POLIS-amount', value=f'{mywallet.getTotalBalanceValueName("POLIS", 1)}', inline=True)
+    embedVar.add_field(name='💎 ATLAS-amount', value=f'{mywallet.getTotalBalanceValueName("ATLAS",1) }', inline=True)
     embedVar.add_field(name='💰 TOTAL[USD]', value=f'{mywallet.getTotalBalanceValueUSD()}', inline=True)
     await ctx.channel.send(embed=embedVar)
 
@@ -114,13 +120,15 @@ async def url(ctx):
 async def help(ctx):
     await ctx.channel.send("""
     Help-Commands:
-    $usd     \t\t [show wallet total balance in $USD]
-    $polis   \t\t [show wallet total $POLLIS]
-    $atlas   \t\t [show wallet total $ATLAS]
+    $usd     \t\t [show wallet total-balance in $USD live price Coingeko]
+    $usdc   \t\t [show wallet amount $USDC]
+    $polis   \t\t [show wallet amount $POLIS]
+    $atlas   \t\t [show wallet amount $ATLAS]
     $report  \t    [creates a short balance report]
     $step  \t    [creates a step.finance handle]
     $solanabeach \t [creates a solanabeach handle]
-    $address \t [show wallet solana-address-raw]""")
+    $address \t [show wallet solana-address-raw]
+    $url \t [show wallet solana-address-url]""")
 
 
 bot.run(TOKEN)
