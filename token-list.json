@@ -1,0 +1,22 @@
+{   
+    "tokens":
+    [
+        {
+            "short_name": "USDC",
+            "address" : "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "cg_price" :  false
+        },
+        {
+            "short_name": "ATLAS",
+            "address" : "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
+            "cg_price" :  true
+        },
+        {
+            "short_name": "POLIS",
+            "address" : "poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk",
+            "cg_price" :  true
+        }
+         
+        
+    ]
+}
