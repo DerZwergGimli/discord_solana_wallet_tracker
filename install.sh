@@ -14,7 +14,7 @@ Group=pythonBOT
 WorkingDirectory=$(pwd)
 VIRTUAL_ENV=$(pwd)/venv
 Environment=PATH=$VIRTUAL_ENV/bin:$PATH
-ExecStart=$(pwd)/venv/bin/python app.py
+ExecStart=$(pwd)/venv/bin/python wallet_tracker_solana.py
 Restart=on-failure
 
 [Install]

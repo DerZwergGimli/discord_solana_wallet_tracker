@@ -9,7 +9,7 @@ using Python3
 
 1. Create venv: `python3 -m venv venv`
 2. Activate venv: `source venv/bin/activate`
-3. Install dependencies: `pip install -r reqirements.txt`
+3. Install dependencies: `pip install -r requirements.txt`
 
 # 1. Setup
 1. edit: `<path-to-repo>` in `dc_walletBot.service`
