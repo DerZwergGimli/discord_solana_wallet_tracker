@@ -41,7 +41,10 @@ class Wallet:
         logger.info('Fetching Token-Pirces...')
         for token in self.tokens:
             if(token.cg_price):
-                token.value_in_usd = token.amount * CoingekoAPI.getTokenPrice('solana', token.address, 'usd')
+                try:
+                    token.value_in_usd = token.amount * CoingekoAPI.getTokenPrice('solana', token.address, 'usd')
+                except:
+                    logger.error('Unable to fetch usd value')
             else: 
                 token.value_in_usd = token.amount
 
