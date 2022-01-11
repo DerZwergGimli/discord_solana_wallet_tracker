@@ -3,6 +3,7 @@ import asyncio
 
 import os
 from discord import guild
+from loguru import logger
 import requests
 
 import discord
@@ -22,32 +23,35 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 BOT_NAME = os.getenv('DISCORD_BOT_NAME')
 WALLET_ADDRESS = os.getenv('DISCORD_WALLET_ADDRESS')
 
-#client = discord.Client()
+
+logger.add("file_{time}.log", format="{time} {level} {message}", filter="my_module", level="INFO")
+
 
 intents = discord.Intents.default()
 intents.members = False
 
 bot = commands.Bot(command_prefix='$', description=description, help_command=None, intents=intents)
 
-mywallet = Wallet(WALLET_ADDRESS)
+wallet = Wallet(WALLET_ADDRESS)
+
 
 #def botUsername():
-sleeptime = 5    
+sleeptime = 10    
 
 # Update Task
 async def update_data_task():
     round = 0
     while True:
-        mywallet.fetchAll()
+        wallet.fetchAll()
         for member in bot.get_all_members():
-            text = f'💰 ${mywallet.getTotalBalanceValueUSD(2)} 💰'
+            text = f'💰 ${wallet.getTotalBalanceValueUSD(2)} 💰'
             await member.edit(nick=text)
         if round == 0:
-            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {mywallet.getTotalBalanceValueName('USDC', 2)} 💵-USDC"))    
+            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {wallet.getTotalBalanceValueName('USDC', 2)} 💵-USDC"))    
         elif round == 1:
-            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{mywallet.getTotalBalanceValueName('ATLAS',2)} 💎-ATLAS"))    
+            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.getTotalBalanceValueName('ATLAS',2)} 💎-ATLAS"))    
         else:
-            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{mywallet.getTotalBalanceValueName('POLIS',2)} 💎-POLIS")) 
+            await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.getTotalBalanceValueName('POLIS',2)} 💎-POLIS")) 
             round = -1
         round +=1
         await asyncio.sleep(sleeptime)
@@ -57,63 +61,63 @@ async def update_data_task():
 @bot.event
 async def on_ready():
     await bot.user.edit(username=BOT_NAME)
-    print('[LOGS] Connecting to discord!')
-    print(f'[LOGS] Logged in as {bot.user} [ID: {bot.user.id}]')
+    logger.info('Connecting to discord!')
+    logger.info(f'Logged in as {bot.user} [ID: {bot.user.id}]')
     bot.loop.create_task(update_data_task())
    
 
 @bot.command()
 async def usd(ctx):
-    balance = mywallet.getTotalBalanceValueUSD()
+    balance = wallet.getTotalBalanceValueUSD()
     await ctx.send(f'We have:\t {balance} 💵-USD')
 
 
 @bot.command()
 async def atlas(ctx):
-    balance = mywallet.getTotalBalanceValueName('ATLAS')
+    balance = wallet.getTotalBalanceValueName('ATLAS')
     await ctx.send(f'I found:\t {balance} 💎-ATLAS')
 
 
 @bot.command()
 async def polis(ctx):
-    balance = mywallet.getTotalBalanceValueName('POLIS')
+    balance = wallet.getTotalBalanceValueName('POLIS')
     await ctx.send(f'I found:\t {balance} 💎-Polis')
 
 
 @bot.command()
 async def usdc(ctx):
-    balance = mywallet.getTotalBalanceValueName('USDC')
+    balance = wallet.getTotalBalanceValueName('USDC')
     await ctx.send(f'I found:\t {balance} 💎-USDC')
 
 
 @bot.command()
 async def report(ctx):
     embedVar = discord.Embed(title='🏴‍☠️ Treasury Report 🏴‍☠️', description='After watching closely i could find the following balances in the Guild-Wallet', color=0x00ff00)
-    embedVar.add_field(name='💵 USDC-amount', value=f'\t {mywallet.getTotalBalanceValueName("USDC", 1)}', inline=True)
-    embedVar.add_field(name='💎 POLIS-amount', value=f'{mywallet.getTotalBalanceValueName("POLIS", 1)}', inline=True)
-    embedVar.add_field(name='💎 ATLAS-amount', value=f'{mywallet.getTotalBalanceValueName("ATLAS",1) }', inline=True)
-    embedVar.add_field(name='💰 TOTAL[USD]', value=f'{mywallet.getTotalBalanceValueUSD()}', inline=True)
+    embedVar.add_field(name='💵 USDC-amount', value=f'\t {wallet.getTotalBalanceValueName("USDC", 1)}', inline=True)
+    embedVar.add_field(name='💎 POLIS-amount', value=f'{wallet.getTotalBalanceValueName("POLIS", 1)}', inline=True)
+    embedVar.add_field(name='💎 ATLAS-amount', value=f'{wallet.getTotalBalanceValueName("ATLAS",1) }', inline=True)
+    embedVar.add_field(name='💰 TOTAL[USD]', value=f'{wallet.getTotalBalanceValueUSD()}', inline=True)
     await ctx.channel.send(embed=embedVar)
 
 
 @bot.command()
 async def step(ctx):
-    await ctx.channel.send(f"🔗 https://app.step.finance/#/watch/{mywallet.getWalletAddress()} 🔗")
+    await ctx.channel.send(f"🔗 https://app.step.finance/#/watch/{wallet.getWalletAddress()} 🔗")
 
 
 @bot.command()
 async def solanabeach(ctx):
-    await ctx.channel.send(f"🔗 https://solanabeach.io/address/{mywallet.getWalletAddress()} 🔗")
+    await ctx.channel.send(f"🔗 https://solanabeach.io/address/{wallet.getWalletAddress()} 🔗")
 
 
 @bot.command()
 async def address(ctx):
-    await ctx.channel.send(f"{mywallet.getWalletAddress()}")
+    await ctx.channel.send(f"{wallet.getWalletAddress()}")
 
 
 @bot.command()
 async def url(ctx):
-    await ctx.channel.send(f"{mywallet.getWalletURL()}")
+    await ctx.channel.send(f"{wallet.getWalletURL()}")
 
 
 @bot.command()
