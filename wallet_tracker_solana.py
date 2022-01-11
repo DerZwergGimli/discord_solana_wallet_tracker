@@ -1,20 +1,17 @@
 # wallet_tracker_solana.py
 import asyncio
+from logging import log
 
 import os
 from discord import guild
 from loguru import logger
 import requests
-
 import discord
 from discord import message
 from discord.ext import tasks, commands
 from dotenv import load_dotenv
 from asyncio import sleep
-
 from src.Wallet import Wallet
-
-
 
 description = '''A Bot that will keep track of you wallet! '''
 
@@ -22,6 +19,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 BOT_NAME = os.getenv('DISCORD_BOT_NAME')
 WALLET_ADDRESS = os.getenv('DISCORD_WALLET_ADDRESS')
+WALLET_URL = os.getenv('DISCORD_WALLET_URL')
 
 
 logger.add("file_{time}.log", format="{time} {level} {message}", filter="my_module", level="INFO")
@@ -32,10 +30,8 @@ intents.members = False
 
 bot = commands.Bot(command_prefix='$', description=description, help_command=None, intents=intents)
 
-wallet = Wallet(WALLET_ADDRESS)
+wallet = Wallet(walletaddress=WALLET_ADDRESS, walleturl=WALLET_URL)
 
-
-#def botUsername():
 sleeptime = 10    
 
 # Update Task
@@ -60,7 +56,10 @@ async def update_data_task():
 #Intial 
 @bot.event
 async def on_ready():
-    await bot.user.edit(username=BOT_NAME)
+    try:
+        await bot.user.edit(username=BOT_NAME)
+    except:
+        logger.warning("Bot name changes to fast")
     logger.info('Connecting to discord!')
     logger.info(f'Logged in as {bot.user} [ID: {bot.user.id}]')
     bot.loop.create_task(update_data_task())
@@ -118,7 +117,7 @@ async def address(ctx):
 @bot.command()
 async def url(ctx):
     await ctx.channel.send(f"{wallet.getWalletURL()}")
-
+   
 
 @bot.command()
 async def help(ctx):
