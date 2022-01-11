@@ -118,20 +118,21 @@ async def address(ctx):
 async def url(ctx):
     await ctx.channel.send(f"{wallet.getWalletURL()}")
    
-
+   
 @bot.command()
 async def help(ctx):
-    await ctx.channel.send("""
-    Help-Commands:
-    $usd     \t\t [show wallet total-balance in $USD live price Coingeko]
-    $usdc   \t\t [show wallet amount $USDC]
-    $polis   \t\t [show wallet amount $POLIS]
-    $atlas   \t\t [show wallet amount $ATLAS]
-    $report  \t    [creates a short balance report]
-    $step  \t    [creates a step.finance handle]
-    $solanabeach \t [creates a solanabeach handle]
-    $address \t [show wallet solana-address-raw]
-    $url \t [show wallet solana-address-url]""")
+    description_text = """```$usd \t\t\t[show wallet total-balance in $USD]
+$usdc            [show wallet amount $USDC]
+$polis           [show wallet amount $POLIS]
+$atlas           [show wallet amount $ATLAS]
+$report          [creates a short balance report]
+$step            [creates a step.finance handle]
+$solanabeach     [creates a solanabeach handle]
+$address         [show wallet solana-address-raw]
+$url             [show wallet solana-address-url]```
+    """
+    embedVar = discord.Embed(title="Help-Commands:", description=description_text, color=0x336EFF)
+    await ctx.send(embed=embedVar)
 
 
 bot.run(TOKEN)
