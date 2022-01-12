@@ -22,7 +22,7 @@ WALLET_ADDRESS = os.getenv('DISCORD_WALLET_ADDRESS')
 WALLET_URL = os.getenv('DISCORD_WALLET_URL')
 
 
-logger.add("file_{time}.log", format="{time} {level} {message}", filter="my_module", level="INFO")
+logger.add("file_{time}.log", format="{time} {level} {message}", level="INFO")
 
 
 intents = discord.Intents.default()
@@ -41,7 +41,14 @@ async def update_data_task():
         wallet.fetchAll()
         for member in bot.get_all_members():
             text = f'💰 ${wallet.getTotalBalanceValueUSD(2)} 💰'
-            await member.edit(nick=text)
+            try:
+                await member.edit(nick=text)
+            except Exception as exception:
+                logger.warning("unable to change price name")
+                logger.warning(exception)
+                logger.warning(exception.__class__.__name__)
+                logger.warning(exception.__context__)
+                logger.warning(f'text: ${text}')
         if round == 0:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {wallet.getTotalBalanceValueName('USDC', 2)} 💵-USDC"))    
         elif round == 1:
@@ -135,4 +142,11 @@ $url             [show wallet solana-address-url]```
     await ctx.send(embed=embedVar)
 
 
-bot.run(TOKEN)
+while True:
+    try:    
+        bot.run(TOKEN)
+    except: 
+        logger.error("Restarting")
+        pass
+    else:
+        break

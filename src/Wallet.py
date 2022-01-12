@@ -48,6 +48,7 @@ class Wallet:
             else: 
                 token.value_in_usd = token.amount
 
+    
     def sumWalletInUSDC(self):
         sum = 0
         for token in self.tokens:
