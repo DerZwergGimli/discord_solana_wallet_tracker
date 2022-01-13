@@ -2,14 +2,17 @@
 This is a Object that represents a Token
 """
 
-class Token:
-  def __init__(self, address:str, amount:float, short_name:str, gc_price:str, value_in_usd:float = 0):
-    self.address = address
-    self.amount = amount
-    self.short_name = short_name
-    self.value_in_usd = value_in_usd
-    self.cg_price = gc_price #coingeko
 
+class Token:
+    def __init__(self, address: str, amount: float, short_name: str):
+        self.address = address
+        self.amount = amount
+        self.short_name = short_name
+
+    def printToken(self):
+        print(f'\t{self.address}\t {self.short_name}\t {self.amount}')
+
+    def set_coingekoPrice(self, cg_price: float):
+        self.cg_price = cg_price
 #  def getAmount(self):
 #    return self.amount
- 

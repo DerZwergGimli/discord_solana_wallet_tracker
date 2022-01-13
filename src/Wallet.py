@@ -15,12 +15,11 @@ class Wallet:
         self.solbalance = None
         self.tokens = []
         j_tokenlist = read_file_to_json(path_tokenlist)
-        for token in j_tokenlist['tokens']:
-            self.tokens.append(
-                Token(token['address'],
-                        -1,
-                        token['short_name'],
-                        token['cg_price']))
+        #for token in j_tokenlist['tokens']:
+        #    self.tokens.append(
+        #        Token(token['address'],
+        #                token['short_name'],
+        #                token['amount']))
         self.walleturl = walleturl
 
     def fetchAll(self):
