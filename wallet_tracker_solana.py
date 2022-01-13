@@ -50,8 +50,7 @@ async def update_data_task():
                 logger.warning(exception.__context__)
                 logger.warning(f'text: ${text}')
                 pass
-            else:
-                logger.error('unable to catch error!')
+         
         if round == 0:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {wallet.getTotalBalanceValueName('USDC', 2)} 💵-USDC"))    
         elif round == 1:
