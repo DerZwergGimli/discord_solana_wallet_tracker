@@ -17,7 +17,7 @@ BOT_NAME = os.getenv('DISCORD_BOT_NAME')
 WALLET_ADDRESS = os.getenv('DISCORD_WALLET_ADDRESS')
 WALLET_URL = os.getenv('DISCORD_WALLET_URL')
 
-# logger.add("file_{time}.log", format="{time} {level} {message}", level="INFO")
+logger.add("file_{time}.log", format="{time} {level} {message}", level="INFO")
 description = '''A Bot that will keep track of a wallet! '''
 bot = commands.Bot(command_prefix='$', description=description, help_command=None)
 wallet = SolanaWallet(walletaddress=WALLET_ADDRESS, walleturl=WALLET_URL)
