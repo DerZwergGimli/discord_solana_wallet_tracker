@@ -30,38 +30,52 @@ class SolscanAPI:
             url=solscan_url, headers=solscan_headers, params=params)
 
         if response != -1:
-            #json_response = response.json()
             tokens: Token = []
             for json_token in response.json():
                 try:
                     if json_token['tokenSymbol']:
                         tokenSymbol = json_token['tokenSymbol']
                 except:
+                    tokenSymbol = "?"
                     pass
                 tokens.append(
                     Token(
                         address=str(json_token['tokenAddress']),
                         amount=float(
-                            json_token['tokenAmount']['uiAmountString']),
-                        short_name=str(tokenSymbol)
+                        json_token['tokenAmount']['uiAmountString']),
+                        short_name=str(tokenSymbol),
+                        coingecko=False
                     ))
-                print(type(tokens[0].address))
             return tokens
 
-    def get_splTransfers(walletAddress: str):
+    def get_splTransfers(walletAddress: str, limit:int = 1):
         solscan_url = base_url + 'account/splTransfers'
         params = {
             'account': walletAddress,
             'offset': 0,
-            'limit': 2,
+            'limit': limit,
         }
         response = callSolscanAPI(
             url=solscan_url, headers=solscan_headers, params=params)
 
         if response != -1:
             splTransfers: SplTransfer = []
-            j_respsonse = response.json()
-            t: dict = j_respsonse['data']
-            for json_transfer in t:
-                splTransfers.append(SplTransfer('dsds', "s", "sds"))
+            for data in response.json()['data']:
+                try:
+                    if data['symbol']:
+                        tokenSymbol = data['symbol']
+                except:
+                    tokenSymbol = "?"
+                    pass
+                splTransfers.append(SplTransfer(
+                    tid=data['_id'], 
+                    address=data['address'], 
+                    signature=data['signature'],
+                    changeType=data['changeType'],
+                    changeAmount=data['changeAmount'],
+                    decimals=data['decimals'],
+                    tokenAddress=data['tokenAddress'],
+                    tokenSymbol=str(tokenSymbol),
+                    blockTime=data["blockTime"]
+                    ))
             return splTransfers

@@ -9,7 +9,7 @@ headers = CaseInsensitiveDict()
 headers['accept'] = 'application/json'
 
 
-class CoingekoAPI:
+class CoingeckoAPI:
     def getTokenPrice(chain_id: str, token_address: str, vs_currencies: str = 'usd'):
         try:
             url = f'{baseurl}/simple/token_price/{chain_id}?contract_addresses={token_address}&vs_currencies={vs_currencies}'

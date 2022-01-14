@@ -20,11 +20,14 @@ WALLET_URL = os.getenv('DISCORD_WALLET_URL')
 wallet = SolanaWallet(walletaddress=WALLET_ADDRESS, walleturl=WALLET_URL)
 wallet.fetch()
 wallet.printWallet()
+#wallet.saveTransferList()
+wallet.checkTransferList()
+wallet.printWallet()
 
 
 print("----")
-spl = SplTransfer("111", "222", "333")
-spl.printTransfer()
+#spl = SplTransfer("111", 5.0, "333")
+#spl.printTransfer()
 
 
 #wallet.fetchAll()

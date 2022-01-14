@@ -1,5 +1,5 @@
 from loguru import logger
-from src.CoingekoAPI import CoingekoAPI
+from CoingeckoAPI import CoingeckoAPI
 from src.file_helper import read_file_to_json
 from src.Token import Token
 from src.SolanaAPI import API
@@ -41,7 +41,7 @@ class Wallet:
         for token in self.tokens:
             if(token.cg_price):
                 try:
-                    token.value_in_usd = token.amount * CoingekoAPI.getTokenPrice('solana', token.address, 'usd')
+                    token.value_in_usd = token.amount * CoingeckoAPI.getTokenPrice('solana', token.address, 'usd')
                 except:
                     logger.error('Unable to fetch usd value')
             else: 
