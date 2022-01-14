@@ -1,5 +1,6 @@
 from email import message
 import os
+from random import randint
 from loguru import logger
 from dotenv import load_dotenv
 import asyncio
@@ -25,7 +26,6 @@ wallet = SolanaWallet(walletaddress=WALLET_ADDRESS, walleturl=WALLET_URL)
 wallet.fetch()
 wallet.printWallet()
 
-
 # @tasks.loop(seconds=10)
 @tasks.loop(seconds=15)
 async def updateWallet_Task():
@@ -36,10 +36,8 @@ async def updateWallet_Task():
         logger.error("Bot could not fetch Wallet")
     logger.debug("Updated wallet!")
 
-
 @tasks.loop(seconds=5)
 async def updateStatus_Task():
-    round = 0
     try:
         try:
             bot_name_text = f'💰 $~{wallet.get_usdValue(2)} 💰'
@@ -51,14 +49,14 @@ async def updateStatus_Task():
                 await server.edit(nick=bot_name_text)
             except:
                 logger.warning("unable to change bot name!")
-        if round == 0:
+        random = randint(1,3)
+        if random == 1:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {wallet.get_tokenBalance('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',2)} 💵-USDC"))
-        elif round == 1:
+        elif random == 2:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.get_tokenBalance('ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx',2)} 💎-ATLAS"))
         else:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.get_tokenBalance('poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk',2)} 💎-POLIS"))
-            round = -1
-        round += 1
+        print(f'random:{random}')
         logger.debug("Updated BOT!")
     except:
         logger.error("UpdateBOT problem!")
