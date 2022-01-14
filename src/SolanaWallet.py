@@ -1,3 +1,4 @@
+import re
 from loguru import logger
 from src.SolscanAPI import SolscanAPI
 from src.CoingeckoAPI import CoingeckoAPI
@@ -17,9 +18,10 @@ class SolanaWallet:
         self.solbalance = None
         self.tokens : Token = []
         self.spl_transfers : SplTransfer = []
-        j_tokenlist = read_file_to_json(path_tokenlist)
+        self.j_tokenlist = read_file_to_json(path_tokenlist)
         self.walleturl = walleturl
         self.usd_value = 9.0
+        self.foundNewTX = False
     
     def fetch(self):
         self.tokens = SolscanAPI.get_account_tokens(self.walletaddress)
@@ -27,10 +29,18 @@ class SolanaWallet:
         
         self.usd_value = 0.0
         for token in self.tokens:
-            if token.coingecko:
-                value = CoingeckoAPI.getTokenPrice('solana', token.address[0], 'usd')
-                if value != None:
-                    self.usd_value += value*token.amount
+            for list in self.j_tokenlist['tokens']:
+                if list['address'] == token.address:
+                    if list['cg_price']:
+                        value = CoingeckoAPI.getTokenPrice('solana', token.address, 'usd')
+                        if value != None:
+                            self.usd_value += value*token.amount
+                    else:
+                        self.usd_value += token.amount
+
+    def get_usdValue(self, decimals:int):
+        return round(self.usd_value, decimals)
+
 
     def get_tokenBalance(self, tokenAddress:str, decimals:int = 0):
         for token in self.tokens:

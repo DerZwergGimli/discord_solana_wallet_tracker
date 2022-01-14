@@ -17,14 +17,19 @@ class SplTransfer:
         self.blockTime = blockTime
         self.isLogged = False
 
-    def printTransfer(self):
-        if self.decimalsAmount == 6:
-            print(f'{self.isLogged}\t{self.signature}\t {self.changeType}{float(self.changeAmount)/1e6} {self.tokenSymbol}\t[{datetime.datetime.fromtimestamp(self.blockTime).isoformat()}]')
+    def get_transferAmountFormated(self):
+        if self.decimalsAmount != 0:
+            tmp = self.decimalsAmount
+            devisor = 1
+            while(tmp):
+                devisor *= 10
+                tmp -= 1
+            return float(self.changeAmount)/devisor
         else:
-            print(f'{self.isLogged}\t{self.signature}\t {self.changeType}{float(self.changeAmount)} {self.tokenSymbol}\t[{datetime.datetime.fromtimestamp(self.blockTime).isoformat()}]')
+            return float(self.changeAmount)
 
-    def set_coingekoPrice(self, cg_price: float):
+    def printTransfer(self):
+        print(f'{self.isLogged}\t{self.signature}\t {self.changeType}{self.get_transferAmountFormated()} {self.tokenSymbol}\t[{datetime.datetime.fromtimestamp(self.blockTime).isoformat()}]')
+       
+    def set_coingeckoPrice(self, cg_price: float):
         self.cg_price = cg_price
-
-#  def getAmount(self):
-#    return self.amount
