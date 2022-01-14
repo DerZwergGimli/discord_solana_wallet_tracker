@@ -101,7 +101,5 @@ async def on_ready():
 
 wallet_botCommads(bot, wallet)
 
-token = 'OTMxMzMzMTg5NTg5NDI2MjA3.YeC5nw.HPttVnHBJNppt_Dw0QEh4q34Xug'
-
 logger.info("Stared!")
-bot.run(token)
+bot.run(TOKEN)
