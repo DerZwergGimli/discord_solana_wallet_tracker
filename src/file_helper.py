@@ -10,10 +10,12 @@ def read_file_to_json(file_path):
 
 
 def write_json_to_file(filepath, j_data):
-    f_file = open(filepath, "r+")
-    f_file.seek(0)
-    json.dump(j_data, f_file, indent=4)
-    f_file.close()
+    with open(filepath, 'r') as f:
+        f.write(j_data)
+    #f_file = open(filepath, "r+")
+    #f_file.seek(0)
+    #json.dump(j_data, f_file, indent=4)
+    #f_file.close()
 
 
 def print_json_pretty(j_data):
