@@ -27,17 +27,17 @@ wallet.fetch()
 wallet.printWallet()
 
 # @tasks.loop(seconds=10)
-@tasks.loop(seconds=18)
-async def updateWallet_Task():
+#@tasks.loop(seconds=18)
+#async def updateWallet_Task():
     # await asyncio.sleep(20)
-    try:
-        wallet.fetch()
-    except:
-        logger.error("Bot could not fetch Wallet")
-    logger.debug("Updated wallet!")
+
+nround = 0
 
 @tasks.loop(seconds=6)
 async def updateStatus_Task():
+    global nround
+    global wallet
+    wallet.fetch()
     try:
         try:
             bot_name_text = f'💰 $~{wallet.get_usdValue(2)} 💰'
@@ -49,14 +49,16 @@ async def updateStatus_Task():
                 await server.edit(nick=bot_name_text)
             except:
                 logger.warning("unable to change bot name!")
-        random = randint(1,3)
-        if random == 1:
+
+        if nround == 0:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f" {wallet.get_tokenBalance('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',2)} 💵-USDC"))
-        elif random == 2:
+            nround +=1
+        elif nround == 1:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.get_tokenBalance('ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx',2)} 💎-ATLAS"))
+            nround +=1
         else:
             await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{wallet.get_tokenBalance('poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk',2)} 💎-POLIS"))
-        print(f'random:{random}')
+            nround = 0
         logger.debug("Updated BOT!")
     except:
         logger.error("UpdateBOT problem!")
@@ -64,8 +66,9 @@ async def updateStatus_Task():
 
 @tasks.loop(seconds=11)
 async def updateTransactions_Task():
+    global wallet
     ids = os.getenv('DISCORD_CHANNEL_TO_POST_TX').split(',')
-
+    wallet.fetch()
     wallet.checkTransferList()
     txs = wallet.spl_transfers
     tx : SplTransfer
@@ -93,7 +96,6 @@ async def updateTransactions_Task():
 @bot.event
 async def on_ready():
     logger.info(f'Bot logged as {bot.user}')
-    updateWallet_Task.start()
     updateStatus_Task.start()
     updateTransactions_Task.start()
 

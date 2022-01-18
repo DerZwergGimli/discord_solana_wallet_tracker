@@ -24,20 +24,24 @@ class SolanaWallet:
         self.foundNewTX = False
     
     def fetch(self):
-        self.tokens = SolscanAPI.get_account_tokens(self.walletaddress)
-        self.spl_transfers = SolscanAPI.get_splTransfers(self.walletaddress, 10)
-        
-        self.usd_value = 0.0
-        for token in self.tokens:
-            for list in self.j_tokenlist['tokens']:
-                if list['address'] == token.address:
-                    if list['cg_price']:
-                        value = CoingeckoAPI.getTokenPrice('solana', token.address, 'usd')
-                        if value != None:
-                            self.usd_value += value*token.amount
-                    else:
-                        self.usd_value += token.amount
-        self.checkTransferList()
+        try:
+            self.tokens = SolscanAPI.get_account_tokens(self.walletaddress)
+            self.spl_transfers = SolscanAPI.get_splTransfers(self.walletaddress, 10)
+            
+            self.usd_value = 0.0
+            for token in self.tokens:
+                for list in self.j_tokenlist['tokens']:
+                    if list['address'] == token.address:
+                        if list['cg_price']:
+                            value = CoingeckoAPI.getTokenPrice('solana', token.address, 'usd')
+                            if value != None:
+                                self.usd_value += value*token.amount
+                        else:
+                            self.usd_value += token.amount
+            self.checkTransferList()
+        except:
+            logger.error("unable to fetch wallet")
+        logger.debug("updated wallet!")
 
     def get_usdValue(self, decimals:int):
         return round(self.usd_value, decimals)
