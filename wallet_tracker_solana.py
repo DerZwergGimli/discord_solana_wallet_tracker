@@ -27,7 +27,7 @@ wallet.fetch()
 wallet.printWallet()
 
 # @tasks.loop(seconds=10)
-@tasks.loop(seconds=15)
+@tasks.loop(seconds=18)
 async def updateWallet_Task():
     # await asyncio.sleep(20)
     try:
@@ -36,7 +36,7 @@ async def updateWallet_Task():
         logger.error("Bot could not fetch Wallet")
     logger.debug("Updated wallet!")
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=6)
 async def updateStatus_Task():
     try:
         try:
@@ -62,7 +62,7 @@ async def updateStatus_Task():
         logger.error("UpdateBOT problem!")
         pass
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=11)
 async def updateTransactions_Task():
     ids = os.getenv('DISCORD_CHANNEL_TO_POST_TX').split(',')
 
