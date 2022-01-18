@@ -36,7 +36,7 @@ nround = 0
 @tasks.loop(seconds=6)
 async def updateStatus_Task():
     global nround
-    global wallet
+
     wallet.fetch()
     try:
         try:
@@ -66,7 +66,6 @@ async def updateStatus_Task():
 
 @tasks.loop(seconds=11)
 async def updateTransactions_Task():
-    global wallet
     ids = os.getenv('DISCORD_CHANNEL_TO_POST_TX').split(',')
     wallet.fetch()
     wallet.checkTransferList()
