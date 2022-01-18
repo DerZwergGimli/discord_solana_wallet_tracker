@@ -37,6 +37,7 @@ class SolanaWallet:
                             self.usd_value += value*token.amount
                     else:
                         self.usd_value += token.amount
+        self.checkTransferList()
 
     def get_usdValue(self, decimals:int):
         return round(self.usd_value, decimals)

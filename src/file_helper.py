@@ -11,7 +11,7 @@ def read_file_to_json(file_path):
 
 def write_json_to_file(filepath, j_data):
     with open(filepath, 'w') as f:
-        f.write(j_data)
+        json.dump(j_data, f, ensure_ascii=False, indent=4)
 
 
 def print_json_pretty(j_data):
