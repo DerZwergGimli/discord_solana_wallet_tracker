@@ -26,7 +26,7 @@ using Python3
 1. run: 'install.sh'
 
 # Support
-If you want to support me buy me a coffee with `coffeplease.sol` as the solana-address! Thanks
+If you want to support me buy me a coffee with `coffeeplease.sol` as the solana-address! Thanks
 
 
 
