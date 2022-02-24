@@ -22,8 +22,9 @@ using Python3
 3. edit `token-list.json` to set token-balances to be checked
 
 
-## 2. Installl 
+## 2. Installl (as service)
 1. run: 'install.sh'
+
 
 # Support
 If you want to support me buy me a coffee with `coffeeplease.sol` as the solana-address! Thanks
