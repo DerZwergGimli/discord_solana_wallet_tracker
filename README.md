@@ -1,7 +1,7 @@
 # discord_solana_wallet_tracker
 
 ❗This Bot is deprecated in favour of a new one [SolanaWalletTracker
-](https://github.com/DerZwergGimli/RustSolanaDiscordWalletTracker)❗
+](https://github.com/DerZwergGimli/solana.wallet.discord.bot)❗
 
 A Simple Solana-Balance Asset-Tracker
 
